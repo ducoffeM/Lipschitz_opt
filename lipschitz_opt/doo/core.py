@@ -122,26 +122,29 @@ def get_bound_box(
     ratio: int = 1,
     maximize: bool = True,
 ) -> np.ndarray:
-
     # get mid_points
     if isinstance(box, Box):
         midpoints = box.get_midpoint()
         distances = box.get_max_dist() / 2.0
     else:
         midpoints = np.concatenate([box_.get_midpoint()[None] for box_ in box], 0)
-        distances = np.array([box_.get_max_dist() for box_ in box]) / 2.0
+        distances = (
+            np.array([box_.get_max_dist() for box_ in box]) / 2.0
+        )  # of for Linf norm
         distances = distances[:, None]
 
     # evaluate the function func on midpoints
     value_ = func(midpoints)
 
     # worst case value of the function inside the domain(s)
+    # import pdb;pdb.set_trace()
     worst = value_
+
     if maximize:
+        # import pdb; pdb.set_trace()
         worst += lipschitz * ratio * distances
     else:
         worst -= lipschitz * ratio * distances
-
     return worst
 
 
