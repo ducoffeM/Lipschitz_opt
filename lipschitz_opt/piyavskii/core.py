@@ -1,10 +1,8 @@
-from __future__ import absolute_import
 from typing import Union, NewType, List, Any, Callable, Optional
 import numpy as np
-from .core_ortools import piyavskii_loop as piyav_ortools
-from .core_gurobi import piyavskii_loop as piyav_gurobi_
-from .core_gb import piyavskii_loop as piyav_gurobi
-from .draft import model_grbpiyavskii
+from lipschitz_opt.piyavskii.core_ortools import piyavskii_loop as piyav_ortools
+from lipschitz_opt.piyavskii.core_gb import piyavskii_loop as piyav_gurobi
+#from .draft import model_grbpiyavskii
 import time as clock
 
 def eval_loop(x, x_i, y_i, lip, p, maximize):
@@ -48,7 +46,7 @@ def piyavskii(
     :param init_random:
     :return:
     """
-
+    raise NotImplementedError('ongoing work')
     if p not in [1, 2, np.inf]:
         raise NotImplementedError()
     if time:
@@ -71,7 +69,7 @@ def piyavskii(
 
     y_init = f(x_init)
     #if n_dim>1:
-    y_init= y_init[:, 0]
+    y_init= y_init[0]
     dist_init = np.maximum(np.abs(x_max - x_init), np.abs(x_init - x_min))
     if p == 1:
         dist_init = np.sum(dist_init)
@@ -92,7 +90,7 @@ def piyavskii(
 
     global_reached = False
     if use_gurobi:
-        from gurobi import Model
+        from gurobipy import Model
         solver= Model('gurobi')
     else:
         from ortools.linear_solver import pywraplp
@@ -115,7 +113,7 @@ def piyavskii(
         log_bounds.append(f_hat_k)
         y_k = f(x_k)
         #if n_dim>1:
-        y_k=y_k[:,0]
+        #y_k=y_k[:,0]
         upper_.append(f_hat_k)
         x_.append(x_k)
         y_.append(y_k)

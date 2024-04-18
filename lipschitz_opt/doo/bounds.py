@@ -1,7 +1,7 @@
 from typing import Union, NewType, List, Any, Callable, Optional
 import numpy as np
 from heapq import heappush, heappop, heapify
-from .core import get_bound_box, split_midpoint, Box, get_split
+from lipschitz_opt.doo.core import get_bound_box, split_midpoint, Box, get_split
 import time as clock
 
 
@@ -117,13 +117,12 @@ def doo(
         node_ = heappop(stack)
         #print(node_.value)
         log_bounds.append(node_.value)
-        log_y.append(max(np.max(log_y), func(node_.get_centroid())))
+        log_y.append(max(max(log_y), func(node_.get_centroid())))
         if time:
             checkpoint_time = clock.process_time()
             log_time.append(checkpoint_time - start_time)
 
         if np.allclose(log_y[-1], log_bounds[-1]):
-            import pdb; pdb.set_trace()
             print("Global optimum reached: {}".format(log_y[-1]))
             break
 

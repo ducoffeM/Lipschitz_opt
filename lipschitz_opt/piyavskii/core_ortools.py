@@ -112,9 +112,9 @@ def piyavskii_loop(
                 #warm_start["linf_norm_{}".format(j)] = z_norm_j
 
                 if maximize:
-                    solver.Add(obj<= y_[j][0] + lip * z_norm_j)
+                    solver.Add(obj<= y_[j] + lip * z_norm_j)
                 else:
-                    solver.Add(obj >= y_[j][0] - lip * z_norm_j)
+                    solver.Add(obj >= y_[j] - lip * z_norm_j)
 
             if "biprod_{}".format(j) not in warm_start.keys():
                 coeff_j = [solver.IntVar(

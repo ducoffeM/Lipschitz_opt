@@ -1,9 +1,7 @@
-from __future__ import absolute_import
 from typing import Union, NewType, List, Any, Callable, Optional
 import numpy as np
 
-# from ortools.linear_solver import pywraplp
-from gurobi import LinExpr, Model, GRB, quicksum, GurobiError
+from gurobipy import LinExpr, Model, GRB, quicksum, GurobiError
 
 
 def piyavskii_loop(
